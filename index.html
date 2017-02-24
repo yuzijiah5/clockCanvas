@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+		<style>
+			canvas{
+				display:block;
+				margin:20px auto;
+				border: 1px solid #f66;
+				transform:rotate(-90deg); ;
+			}
+		</style>
+	</head>
+	<body>
+		<canvas id="canvas" ></canvas>
+	</body>
+	<script type="text/javascript">
+		var canvas=document.getElementById("canvas");
+		var ctx=canvas.getContext("2d");
+		canvas.width=500;
+		canvas.height=500;
+		
+		
+		setInterval(function(){
+			ctx.clearRect(0,0,canvas.width,canvas.height);
+			drawClock();
+		},1000);
+		
+		function drawClock(){
+			var _date=new Date();
+			var h=_date.getHours();
+			var m=_date.getMinutes();
+			var s=_date.getSeconds();
+			ctx.clearRect(0,0,canvas.width,canvas.height);
+			ctx.save();
+			//表盘圆
+			var r=canvas.width>canvas.height?(canvas.width/2-20) : canvas.height/2-20
+			ctx.beginPath();
+			ctx.translate((canvas.width/2),canvas.height/2);
+			ctx.strokeStyle="black";
+			ctx.arc(0,0,r,0,2*Math.PI,true);
+			ctx.stroke();
+			ctx.restore();
+        	ctx.save();
+			//表盘时刻度
+			var degH=2*Math.PI/12;
+			ctx.translate(canvas.width/2,canvas.height/2);
+			for(var i=0;i<12;i++){
+				ctx.beginPath();
+				ctx.fillStyle="black";
+				ctx.fillRect(r-15,-3,15,6);
+				ctx.rotate(degH);
+			}
+			ctx.restore();
+        	ctx.save();
+			//表盘分刻度
+			var degM=2*Math.PI/60;
+			ctx.translate(canvas.width/2,canvas.height/2);
+			for(var i=0;i<60;i++){
+				if(i%5==0){
+				}else{
+					ctx.beginPath();
+					ctx.fillStyle="lightseagreen";
+					ctx.fillRect(r-8,-2,8,4);
+				}
+				ctx.rotate(degM);
+			}
+			ctx.restore();
+       		ctx.save();
+			
+			
+			
+			
+			//时针
+			ctx.beginPath();
+			ctx.fillStyle="#333";
+			ctx.translate(canvas.width/2,canvas.height/2);
+			if(h>=12){
+				h-=12;
+			}
+			ctx.rotate(2*Math.PI*h/12+(2*Math.PI*m/60)/60);
+			ctx.fillRect(-20,-3,2*r/3,6);
+			ctx.restore();
+			ctx.save();
+			//分针
+			ctx.beginPath();
+			ctx.fillStyle="#666";
+			ctx.translate(canvas.width/2,canvas.height/2);
+			ctx.rotate(2*Math.PI*m/60+(2*Math.PI*s/60)/60);
+			ctx.fillRect(-30,-2,r,4);
+			ctx.restore();
+			ctx.save();
+			
+			
+			ctx.beginPath();
+			ctx.fillStyle="#f33";
+			ctx.translate(canvas.width/2,canvas.height/2);
+			ctx.rotate(2*Math.PI*s/60);
+			ctx.fillRect(-40,-1,r+20,2);
+			ctx.restore();
+			ctx.save();
+			
+			
+			
+			ctx.beginPath();
+			ctx.fillStyle="black";
+			ctx.translate(canvas.width/2,canvas.height/2);
+			ctx.arc(0,0,5,0,2*Math.PI,true);
+			ctx.fill();
+			ctx.restore();
+			ctx.save();
+		
+			
+			ctx.restore();
+			ctx.save();
+			ctx.font="20px 黑体";
+			ctx.translate(canvas.width/2,canvas.height/2);
+			ctx.rotate(Math.PI/2);
+			h = h<10 ? "0"+h : h;
+			m = m<10 ? "0"+m : m;
+			s = s<10 ? "0"+s : s;
+			ctx.fillText(h+":"+m+":"+s,-r/6,r*3/5);
+			ctx.restore();
+			ctx.save();
+			
+			
+			
+			
+			
+		}
+		
+		
+		
+		
+		
+		
+		
+		
+	
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</script>
+</html>
